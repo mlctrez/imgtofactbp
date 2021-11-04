@@ -133,7 +133,7 @@ func (i *Index) Render() app.UI {
 			app.Div().Class("col").Body(
 				i.sizeCheckboxes(),
 				app.Button().Class("btn btn-success").Text("Copy").OnClick(i.copyBlueprintBook),
-				),
+			),
 			//app.Div().Class("col").Body(
 			//	app.Button().Class("btn btn-success").Text("Copy").OnClick(i.copyBlueprintBook),
 			//	app.Textarea().Class("form-control").ID("blueprintText").Rows(5),
@@ -145,11 +145,13 @@ func (i *Index) Render() app.UI {
 }
 
 func (i *Index) sizeCheckboxes() app.HTMLDiv {
-	return app.Div().Class("row").Body(
-		app.Div().Class("col").Body(
-			sizeCb(30), sizeCb(60), sizeCb(80), sizeCb(100), sizeCb(120), sizeCb(150),
-		),
-	)
+
+	var boxes []app.UI
+	for _, s := range blueprintWidths() {
+		boxes = append(boxes, sizeCb(s))
+	}
+
+	return app.Div().Class("row").Body(app.Div().Class("col").Body(boxes...))
 }
 
 func (i *Index) thresholdSlider() app.HTMLInput {
@@ -257,11 +259,15 @@ func (i *Index) renderPreview(t uint32) {
 
 }
 
+func blueprintWidths() []int {
+	return []int{30, 60, 80, 100, 120, 130, 160, 180, 200, 220, 240}
+}
+
 func (i *Index) copyBlueprintBook(ctx app.Context, e app.Event) {
 
 	sizeMap := make(map[int]bool)
-	sizes := []int{30, 60, 80, 100, 120, 150}
-	for _, size := range sizes {
+	sizes := blueprintWidths()
+	for _, size := range blueprintWidths() {
 		checkbox := app.Window().GetElementByID(fmt.Sprintf("size-%d", size))
 		if checkbox.Truthy() {
 			sizeMap[size] = checkbox.Get("checked").Bool()
