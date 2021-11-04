@@ -166,10 +166,6 @@ func (i *Index) Render() app.UI {
 							OnClick(i.copyBlueprintBook),
 					),
 				),
-				/*
-					<label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-					  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-				*/
 				app.Div().Class("row row-cols-auto").Body(
 					app.Label().For("blueprintText").Class("form-label").Text("blueprint string"),
 					app.Textarea().Class("form-control").ID("blueprintText").Rows(20),
