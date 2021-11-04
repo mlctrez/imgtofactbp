@@ -31,6 +31,7 @@ func main() {
 	app.Route("/", &components.Index{})
 
 	if static != "" {
+		h.Resources = app.GitHubPages("imgtofactbp")
 		err := app.GenerateStaticWebsite(static, h)
 		if err != nil {
 			log.Fatal(err)

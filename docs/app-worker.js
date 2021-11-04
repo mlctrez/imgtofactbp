@@ -1,21 +1,21 @@
-const cacheName = "app-" + "737e1f7aa2433e2786af920a45357a2eed16dace";
+const cacheName = "app-" + "7adadf3915c608520570f4f55f2fa374524c46bf";
 
 self.addEventListener("install", event => {
-  console.log("installing app worker 737e1f7aa2433e2786af920a45357a2eed16dace");
+  console.log("installing app worker 7adadf3915c608520570f4f55f2fa374524c46bf");
 
   event.waitUntil(
     caches.open(cacheName).
       then(cache => {
         return cache.addAll([
-          "/",
-          "/app.css",
-          "/app.js",
-          "/manifest.webmanifest",
-          "/wasm_exec.js",
-          "/web/app.wasm",
-          "/web/logo-192.png",
-          "/web/logo-512.png",
-          "/web/style.css",
+          "/imgtofactbp",
+          "/imgtofactbp/app.css",
+          "/imgtofactbp/app.js",
+          "/imgtofactbp/manifest.webmanifest",
+          "/imgtofactbp/wasm_exec.js",
+          "/imgtofactbp/web/app.wasm",
+          "/imgtofactbp/web/logo-192.png",
+          "/imgtofactbp/web/logo-512.png",
+          "/imgtofactbp/web/style.css",
           "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
           "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
           "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
@@ -40,7 +40,7 @@ self.addEventListener("activate", event => {
       );
     })
   );
-  console.log("app worker 737e1f7aa2433e2786af920a45357a2eed16dace is activated");
+  console.log("app worker 7adadf3915c608520570f4f55f2fa374524c46bf is activated");
 });
 
 self.addEventListener("fetch", event => {

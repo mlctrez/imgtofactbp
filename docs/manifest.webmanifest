@@ -4,18 +4,18 @@
   "description": "",
   "icons": [
     {
-      "src": "/web/logo-192.png",
+      "src": "/imgtofactbp/web/logo-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/web/logo-512.png",
+      "src": "/imgtofactbp/web/logo-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "scope": "/",
-  "start_url": "/",
+  "scope": "/imgtofactbp/",
+  "start_url": "/imgtofactbp/",
   "background_color": "#2d2c2c",
   "theme_color": "#2d2c2c",
   "display": "standalone"

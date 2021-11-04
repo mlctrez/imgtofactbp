@@ -3,34 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="author" content>
+<meta content name="author">
 <meta name="description" content>
 <meta name="keywords" content>
 <meta name="theme-color" content="#2d2c2c">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta property="og:url" content="http://127.0.0.1:43549/">
-<meta content="factorio image to blueprint" property="og:title">
+<meta property="og:url" content="http://127.0.0.1:35691/">
+<meta property="og:title" content="factorio image to blueprint">
 <meta property="og:description" content>
 <meta property="og:type" content="website">
-<meta content property="og:image">
+<meta property="og:image" content>
 <title>
 factorio image to blueprint
 </title>
-<link rel="icon" type="image/png" href="/web/logo-192.png">
-<link rel="apple-touch-icon" href="/web/logo-192.png">
-<link rel="manifest" href="/manifest.webmanifest">
-<link type="text/css" rel="stylesheet" href="/app.css">
-<script defer="true" src="/wasm_exec.js"></script>
-<script defer="true" src="/app.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" type="text/css">
+<link rel="icon" type="image/png" href="/imgtofactbp/web/logo-192.png">
+<link href="/imgtofactbp/web/logo-192.png" rel="apple-touch-icon">
+<link rel="manifest" href="/imgtofactbp/manifest.webmanifest">
+<link rel="stylesheet" href="/imgtofactbp/app.css" type="text/css">
+<script defer="true" src="/imgtofactbp/wasm_exec.js"></script>
+<script defer="true" src="/imgtofactbp/app.js"></script>
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
 <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-<link type="text/css" rel="stylesheet" href="/web/style.css">
-<script defer="true" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="/imgtofactbp/web/style.css" type="text/css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer="true"></script>
 </head>
 <body>
 <div>
 <aside id="app-wasm-loader" class="goapp-app-info">
-<img id="app-wasm-loader-icon" class="goapp-logo goapp-spin" src="/web/logo-192.png">
+<img id="app-wasm-loader-icon" class="goapp-logo goapp-spin" src="/imgtofactbp/web/logo-192.png">
 <p id="app-wasm-loader-label" class="goapp-label">
 Loading
 </p>
@@ -48,17 +48,17 @@ Image to blueprint converter v0.1
 </div>
 <div class="row row-cols-auto">
 <div class="col">
-<input id="hiddenFilePicker" style="display:none;" multiple="false" accept="image/*" type="file">
-<div id="clipboard" style="display:none;">
+<input type="file" id="hiddenFilePicker" style="display:none;" multiple="false" accept="image/*">
+<div style="display:none;" id="clipboard">
 clipboard component
 </div>
-<img id="uploadedImage" src="/web/logo-192.png" width="300" style="cursor:pointer;">
+<img id="uploadedImage" src="/imgtofactbp/web/logo-192.png" width="300" style="cursor:pointer;">
 </div>
 <div class="col">
 <img id="grayScaleImage" src width="300" style="cursor:not-allowed;">
 </div>
 <div class="col">
-<img width="300" id="blueprintRender" src>
+<img id="blueprintRender" src width="300">
 </div>
 </div>
 <div class="row row-cols-auto">
@@ -84,18 +84,18 @@ resulting blueprint are placed in the book.
 </div>
 <div class="row row-cols-auto">
 <div class="col-4">
-<label for="threshold" class="form-label">
+<label class="form-label" for="threshold">
 threshold
 </label>
-<input id="threshold" type="range" class="form-range" min="0" max="80000" step="1000.0000" value="40000">
-<select class="form-select" id="tileType">
-<option value="landfill" id="tile_option_0">
+<input max="80000" step="1000.0000" value="40000" id="threshold" type="range" class="form-range" min="0">
+<select id="tileType" class="form-select">
+<option id="tile_option_0" value="landfill">
 landfill
 </option>
 <option id="tile_option_1" value="stone-path">
 stone-path
 </option>
-<option id="tile_option_2" value="concrete">
+<option value="concrete" id="tile_option_2">
 concrete
 </option>
 <option id="tile_option_3" value="refined-concrete">
@@ -124,14 +124,14 @@ Width 30
 </label>
 </div>
 <div class="form-check">
-<input type="checkbox" id="size-60" checked="true" class="form-check-input">
+<input class="form-check-input" type="checkbox" id="size-60" checked="true">
 <label class="form-check-label" for="size-60">
 Width 60
 </label>
 </div>
 <div class="form-check">
 <input class="form-check-input" type="checkbox" id="size-80" checked="false">
-<label for="size-80" class="form-check-label">
+<label class="form-check-label" for="size-80">
 Width 80
 </label>
 </div>
@@ -144,7 +144,7 @@ Width 100
 </label>
 </div>
 <div class="form-check">
-<input class="form-check-input" type="checkbox" id="size-120" checked="false">
+<input type="checkbox" id="size-120" checked="false" class="form-check-input">
 <label class="form-check-label" for="size-120">
 Width 120
 </label>
@@ -163,7 +163,7 @@ Copy Blueprint Book
 </div>
 </div>
 <div class="row row-cols-auto">
-<label class="form-label" for="blueprintText">
+<label for="blueprintText" class="form-label">
 blueprint string
 </label>
 <textarea class="form-control" id="blueprintText" rows="20"></textarea>

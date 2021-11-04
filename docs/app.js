@@ -5,7 +5,7 @@ var goappOnUpdate = function () { };
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("/app-worker.js")
+    .register("/imgtofactbp/app-worker.js")
     .then(reg => {
       console.log("registering app service worker");
 
@@ -28,7 +28,7 @@ if ("serviceWorker" in navigator) {
 // -----------------------------------------------------------------------------
 // Env
 // -----------------------------------------------------------------------------
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"737e1f7aa2433e2786af920a45357a2eed16dace"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"/imgtofactbp","GOAPP_STATIC_RESOURCES_URL":"/imgtofactbp","GOAPP_VERSION":"7adadf3915c608520570f4f55f2fa374524c46bf"};
 
 function goappGetenv(k) {
   return goappEnv[k];
@@ -105,7 +105,7 @@ if (!/bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)) {
 
   const go = new Go();
 
-  WebAssembly.instantiateStreaming(fetch("/web/app.wasm"), go.importObject)
+  WebAssembly.instantiateStreaming(fetch("/imgtofactbp/web/app.wasm"), go.importObject)
     .then(result => {
       const loaderIcon = document.getElementById("app-wasm-loader-icon");
       loaderIcon.className = "goapp-logo";
