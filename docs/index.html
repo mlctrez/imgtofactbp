@@ -3,29 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
-<meta content name="author">
+<meta name="author" content>
 <meta name="description" content>
 <meta name="keywords" content>
 <meta name="theme-color" content="#2d2c2c">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta property="og:url" content="http://127.0.0.1:35691/">
+<meta property="og:url" content="http://127.0.0.1:43317/">
 <meta property="og:title" content="factorio image to blueprint">
 <meta property="og:description" content>
 <meta property="og:type" content="website">
-<meta property="og:image" content>
+<meta content property="og:image">
 <title>
 factorio image to blueprint
 </title>
 <link rel="icon" type="image/png" href="/imgtofactbp/web/logo-192.png">
-<link href="/imgtofactbp/web/logo-192.png" rel="apple-touch-icon">
+<link rel="apple-touch-icon" href="/imgtofactbp/web/logo-192.png">
 <link rel="manifest" href="/imgtofactbp/manifest.webmanifest">
-<link rel="stylesheet" href="/imgtofactbp/app.css" type="text/css">
-<script defer="true" src="/imgtofactbp/wasm_exec.js"></script>
+<link type="text/css" rel="stylesheet" href="/imgtofactbp/app.css">
+<script src="/imgtofactbp/wasm_exec.js" defer="true"></script>
 <script defer="true" src="/imgtofactbp/app.js"></script>
-<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" type="text/css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="/imgtofactbp/web/style.css" type="text/css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer="true"></script>
+<link type="text/css" rel="stylesheet" href="/imgtofactbp/web/style.css">
+<script defer="true" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div>
@@ -49,10 +49,10 @@ Image to blueprint converter v0.1
 <div class="row row-cols-auto">
 <div class="col">
 <input type="file" id="hiddenFilePicker" style="display:none;" multiple="false" accept="image/*">
-<div style="display:none;" id="clipboard">
+<div id="clipboard" style="display:none;">
 clipboard component
 </div>
-<img id="uploadedImage" src="/imgtofactbp/web/logo-192.png" width="300" style="cursor:pointer;">
+<img style="cursor:pointer;" id="uploadedImage" src="/imgtofactbp/web/logo-192.png" width="300">
 </div>
 <div class="col">
 <img id="grayScaleImage" src width="300" style="cursor:not-allowed;">
@@ -84,18 +84,18 @@ resulting blueprint are placed in the book.
 </div>
 <div class="row row-cols-auto">
 <div class="col-4">
-<label class="form-label" for="threshold">
+<label for="threshold" class="form-label">
 threshold
 </label>
-<input max="80000" step="1000.0000" value="40000" id="threshold" type="range" class="form-range" min="0">
-<select id="tileType" class="form-select">
+<input id="threshold" type="range" class="form-range" min="0" max="80000" step="1000.0000" value="40000">
+<select class="form-select" id="tileType">
 <option id="tile_option_0" value="landfill">
 landfill
 </option>
 <option id="tile_option_1" value="stone-path">
 stone-path
 </option>
-<option value="concrete" id="tile_option_2">
+<option id="tile_option_2" value="concrete">
 concrete
 </option>
 <option id="tile_option_3" value="refined-concrete">
@@ -109,7 +109,7 @@ refined-hazard-concrete-left
 </option>
 </select>
 <div class="form-check">
-<input checked="false" class="form-check-input" type="checkbox" id="inverted">
+<input class="form-check-input" type="checkbox" id="inverted" checked="false">
 <label class="form-check-label" for="inverted">
 Invert
 </label>
@@ -130,7 +130,7 @@ Width 60
 </label>
 </div>
 <div class="form-check">
-<input class="form-check-input" type="checkbox" id="size-80" checked="false">
+<input id="size-80" checked="false" class="form-check-input" type="checkbox">
 <label class="form-check-label" for="size-80">
 Width 80
 </label>
@@ -144,7 +144,7 @@ Width 100
 </label>
 </div>
 <div class="form-check">
-<input type="checkbox" id="size-120" checked="false" class="form-check-input">
+<input checked="false" class="form-check-input" type="checkbox" id="size-120">
 <label class="form-check-label" for="size-120">
 Width 120
 </label>

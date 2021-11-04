@@ -1,19 +1,11 @@
 package main
 
 import (
-	"flag"
-	"log"
-	"net/http"
-
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/imgtofactbp/components"
 )
 
-func main() {
-	var static string
-	flag.StringVar(&static, "static", "docs", "generate static files int at the provided path")
-	flag.Parse()
-
+func buildHandler() *app.Handler {
 	h := &app.Handler{
 		Title:     "factorio image to blueprint",
 		Name:      "factorio image to blueprint",
@@ -28,21 +20,11 @@ func main() {
 			"/web/style.css",
 		},
 	}
+	return h
+}
+
+func main() {
 	app.Route("/", &components.Index{})
-
-	if static != "" {
-		h.Resources = app.GitHubPages("imgtofactbp")
-		err := app.GenerateStaticWebsite(static, h)
-		if err != nil {
-			log.Fatal(err)
-		}
-		return
-	}
-
 	app.RunWhenOnBrowser()
-
-	if err := http.ListenAndServe(":8989", h); err != nil {
-		log.Fatal(err)
-	}
-
+	httpServer()
 }
