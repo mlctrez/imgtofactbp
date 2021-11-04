@@ -18,6 +18,8 @@ import (
 	"github.com/nfnt/resize"
 )
 
+const ImageRenderWidth = 300
+
 type Index struct {
 	app.Compo
 	picker    *FilePicker
@@ -34,10 +36,6 @@ func (i *Index) OnMount(ctx app.Context) {
 	i.picker.Handle(ctx, i.imageChanged)
 	i.clipboard.HandlePaste(ctx, "image/", i.imagePaste)
 }
-
-var _ app.Mounter = (*Index)(nil)
-
-const ImageRenderWidth = 300
 
 func (i *Index) imageChanged(file *FilePickerResponse) {
 	img, _, err := conversions.Base64ToImage(file.Data)
@@ -111,71 +109,78 @@ func tileTypes() []string {
 }
 
 func (i *Index) Render() app.UI {
-	fmt.Println("render of index page")
 	i.picker = (&FilePicker{ID: "hiddenFilePicker", Multiple: false}).Accept("image/*")
 	i.clipboard = &Clipboard{ID: "clipboard"}
 	if i.threshold == 0 {
-		fmt.Println("setting i.threshold = 40000")
 		i.threshold = 40000
 		i.inverted = false
 		i.tileType = tileTypes()[0]
 	}
 
 	body := app.Div().Class("container").Body(
-		navbar(),
-		i.imagesRow(),
-		app.Div().Class("row row-cols-auto").Body(
-			app.Div().Class("col").Body(
-				app.Hr(), app.P().Text(instructions),
-			),
+		navbar(), i.picker, i.clipboard,
+		app.Div().Class("row").Body(
+			app.Div().Class("col").Style("font-size", "16px").Body(instructionsElements()...),
 		),
-		app.Div().Class("row row-cols-auto").Body(
-			app.Div().Class("col-4").Body(
+		i.imagesRow(),
+		app.Div().Class("row").Body(
+			app.Div().Class("col").Body(
 				app.Label().For("threshold").Class("form-label").Text("threshold"),
-				app.Input().ID("threshold").Type("range").Class("form-range").
-					Min("0").Max(80000).Step(1000).Value(fmt.Sprintf("%d", i.threshold)).
-					OnChange(func(ctx app.Context, e app.Event) {
-						parseInt, err := strconv.ParseInt(ctx.JSSrc().Get("value").String(), 10, 32)
-						if err == nil {
-							i.threshold = uint32(parseInt)
-							i.renderPreview(uint32(parseInt))
-						}
-					}),
-				app.Select().Class("form-select").
-					ID("tileType").Body(func() []app.UI {
-					var opts []app.UI
-					for i, s := range tileTypes() {
-						opts = append(opts, app.Option().ID(fmt.Sprintf("tile_option_%d", i)).Value(s).Text(s))
-					}
-					return opts
-				}()...).OnChange(func(ctx app.Context, e app.Event) {
-					i.tileType = ctx.JSSrc().Get("value").String()
-					fmt.Println("set tile type to", i.tileType)
-				}),
-				app.Div().Class("form-check").Body(
-					app.Input().Class("form-check-input").Type("checkbox").ID("inverted").
-						OnChange(i.invertChange).Checked(i.inverted),
-					app.Label().Class("form-check-label").For("inverted").Text("Invert"),
-				),
-				app.Hr(),
-				app.Div().Class("row row-cols-auto").Body(
-					app.Div().Class("col").Body(sizeCb(30), sizeCb(60), sizeCb(80)),
-					app.Div().Class("col").Body(sizeCb(100), sizeCb(120), sizeCb(150)),
-					app.Div().Class("col").Body(
-						app.Button().Class("btn btn-success").Text("Copy Blueprint Book").
-							OnClick(i.copyBlueprintBook),
-					),
-				),
-				app.Div().Class("row row-cols-auto").Body(
-					app.Label().For("blueprintText").Class("form-label").Text("blueprint string"),
-					app.Textarea().Class("form-control").ID("blueprintText").Rows(20),
-				),
+				i.thresholdSlider(), i.tileTypeSelect(), i.invertCheckbox(),
 			),
-			app.Div().Class("col-4"),
+			app.Div().Class("col").Body(i.sizeCheckboxes()),
+			app.Div().Class("col").Body(
+				app.Button().Class("btn btn-success").Text("Create").OnClick(i.copyBlueprintBook),
+				app.Textarea().Class("form-control").ID("blueprintText").Rows(5),
+			),
 		),
 	)
 
 	return body
+}
+
+func (i *Index) sizeCheckboxes() app.HTMLDiv {
+	return app.Div().Class("row").Body(
+		app.Div().Class("col").Body(
+			sizeCb(30), sizeCb(60), sizeCb(80), sizeCb(100), sizeCb(120), sizeCb(150),
+		),
+	)
+}
+
+func (i *Index) thresholdSlider() app.HTMLInput {
+	return app.Input().ID("threshold").Type("range").Class("form-range").
+		Min("0").Max(80000).Step(1000).Value(fmt.Sprintf("%d", i.threshold)).
+		OnChange(i.thresholdSliderChange)
+}
+
+func (i *Index) thresholdSliderChange(ctx app.Context, e app.Event) {
+	parseInt, err := strconv.ParseInt(ctx.JSSrc().Get("value").String(), 10, 32)
+	if err == nil {
+		i.threshold = uint32(parseInt)
+		i.renderPreview(uint32(parseInt))
+	}
+}
+
+func (i *Index) invertCheckbox() app.HTMLDiv {
+	return app.Div().Class("form-check").Body(
+		app.Input().Class("form-check-input").Type("checkbox").ID("inverted").
+			OnChange(i.invertChange).Checked(i.inverted),
+		app.Label().Class("form-check-label").For("inverted").Text("Invert"),
+	)
+}
+
+func (i *Index) tileTypeSelect() app.HTMLSelect {
+	return app.Select().Class("form-select").
+		ID("tileType").Body(func() []app.UI {
+		var opts []app.UI
+		for i, s := range tileTypes() {
+			opts = append(opts, app.Option().ID(fmt.Sprintf("tile_option_%d", i)).Value(s).Text(s))
+		}
+		return opts
+	}()...).OnChange(func(ctx app.Context, e app.Event) {
+		i.tileType = ctx.JSSrc().Get("value").String()
+		fmt.Println("set tile type to", i.tileType)
+	})
 }
 
 func sizeCb(size int) app.HTMLDiv {
@@ -197,17 +202,15 @@ func navbar() app.HTMLDiv {
 	return app.Div().Class("container").Body(
 		app.Nav().Class("navbar navbar-light bg-light").Body(
 			app.Div().Class("container-fluid").Body(
-				app.Span().Class("navbar-text").Text("Image to blueprint converter v0.1"),
+				app.Span().Class("navbar-text").Text("Factorio image to blueprint converter v0.1 instructions"),
 			),
 		),
 	)
 }
 
 func (i *Index) imagesRow() app.HTMLDiv {
-	return app.Div().Class("row row-cols-auto").Body(
+	return app.Div().Class("row").Body(
 		app.Div().Class("col").Body(
-			i.picker,
-			i.clipboard,
 			app.Img().ID("uploadedImage").Src("/web/logo-192.png").
 				Width(ImageRenderWidth).Style("cursor", "pointer").
 				OnClick(func(ctx app.Context, e app.Event) { i.picker.Click() }),
@@ -299,17 +302,19 @@ func buildBlueprint(label string, img image.Image, tileAt func(r, g, b, a uint32
 	return blue
 }
 
-var instructions = `
-
-Click on the blueprint book above and select a image file to convert to a tile blueprint.
-This image will replace the blueprint book and a grayscale version will appear immediately to the right.
-
-Adjust the threshold slider and a preview image will appear to the right of the grayscale image. Black pixels will
-represent where the selected tile type will appear in the blueprint. Use the invert checkbox to flip black and
-white tiles in the resulting blueprint.
-
-When you're satisfied with the preview image, click on the copy button and your clipboard will now contain
-the blueprint book string to paste into Factorio. Use the size checkboxes to determine which sizes of the
-resulting blueprint are placed in the book.
-
-`
+func instructionsElements() []app.UI {
+	return []app.UI{
+		app.P().Text(`Click on the blueprint book to select an image file or use Ctrl-V to paste 
+an image from the clipboard.   The book image will be replaced and a grayscale of the image will appear to the right.`),
+		app.P().Text(`Adjust the threshold slider and a preview image will appear 
+to the right of the grayscale image. Black pixels will represent where the selected tile 
+type will appear in the blueprint. Use the invert checkbox if needed based on your image.
+`),
+		app.P().Text(`When you are satisfied with the preview image, use the size checkboxes to 
+select the widths to generate. Click on Create and the text area now contains the blueprint
+book string for Factorio. 
+`),
+		app.P().Text("Enjoy."),
+		app.Hr(),
+	}
+}

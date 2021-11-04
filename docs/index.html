@@ -5,14 +5,14 @@
 <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="author" content>
 <meta name="description" content>
-<meta name="keywords" content>
+<meta content name="keywords">
 <meta name="theme-color" content="#2d2c2c">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta property="og:url" content="http://127.0.0.1:43317/">
+<meta property="og:url" content="http://127.0.0.1:44989/">
 <meta property="og:title" content="factorio image to blueprint">
 <meta property="og:description" content>
 <meta property="og:type" content="website">
-<meta content property="og:image">
+<meta property="og:image" content>
 <title>
 factorio image to blueprint
 </title>
@@ -20,17 +20,17 @@ factorio image to blueprint
 <link rel="apple-touch-icon" href="/imgtofactbp/web/logo-192.png">
 <link rel="manifest" href="/imgtofactbp/manifest.webmanifest">
 <link type="text/css" rel="stylesheet" href="/imgtofactbp/app.css">
-<script src="/imgtofactbp/wasm_exec.js" defer="true"></script>
+<script defer="true" src="/imgtofactbp/wasm_exec.js"></script>
 <script defer="true" src="/imgtofactbp/app.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" type="text/css" rel="stylesheet">
-<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="/imgtofactbp/web/style.css">
 <script defer="true" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div>
 <aside id="app-wasm-loader" class="goapp-app-info">
-<img id="app-wasm-loader-icon" class="goapp-logo goapp-spin" src="/imgtofactbp/web/logo-192.png">
+<img src="/imgtofactbp/web/logo-192.png" id="app-wasm-loader-icon" class="goapp-logo goapp-spin">
 <p id="app-wasm-loader-label" class="goapp-label">
 Loading
 </p>
@@ -41,53 +41,56 @@ Loading
 <nav class="navbar navbar-light bg-light">
 <div class="container-fluid">
 <span class="navbar-text">
-Image to blueprint converter v0.1
+Factorio image to blueprint converter v0.1 instructions
 </span>
 </div>
 </nav>
 </div>
-<div class="row row-cols-auto">
-<div class="col">
 <input type="file" id="hiddenFilePicker" style="display:none;" multiple="false" accept="image/*">
 <div id="clipboard" style="display:none;">
 clipboard component
 </div>
-<img style="cursor:pointer;" id="uploadedImage" src="/imgtofactbp/web/logo-192.png" width="300">
+<div class="row">
+<div class="col" style="font-size:16px;">
+<p>
+Click on the blueprint book to select an image file or use Ctrl-V to paste 
+an image from the clipboard.   The book image will be replaced and a grayscale of the image will appear to the right.
+</p>
+<p>
+Adjust the threshold slider and a preview image will appear 
+to the right of the grayscale image. Black pixels will represent where the selected tile 
+type will appear in the blueprint. Use the invert checkbox if needed based on your image.
+
+</p>
+<p>
+When you are satisfied with the preview image, use the size checkboxes to 
+select the widths to generate. Click on Create and the text area now contains the blueprint
+book string for Factorio. 
+
+</p>
+<p>
+Enjoy.
+</p>
+<hr>
+</div>
+</div>
+<div class="row">
+<div class="col">
+<img id="uploadedImage" src="/imgtofactbp/web/logo-192.png" width="300" style="cursor:pointer;">
 </div>
 <div class="col">
-<img id="grayScaleImage" src width="300" style="cursor:not-allowed;">
+<img width="300" style="cursor:not-allowed;" id="grayScaleImage" src>
 </div>
 <div class="col">
 <img id="blueprintRender" src width="300">
 </div>
 </div>
-<div class="row row-cols-auto">
+<div class="row">
 <div class="col">
-<hr>
-<p>
-
-
-Click on the blueprint book above and select a image file to convert to a tile blueprint.
-This image will replace the blueprint book and a grayscale version will appear immediately to the right.
-
-Adjust the threshold slider and a preview image will appear to the right of the grayscale image. Black pixels will
-represent where the selected tile type will appear in the blueprint. Use the invert checkbox to flip black and
-white tiles in the resulting blueprint.
-
-When you&#39;re satisfied with the preview image, click on the copy button and your clipboard will now contain
-the blueprint book string to paste into Factorio. Use the size checkboxes to determine which sizes of the
-resulting blueprint are placed in the book.
-
-
-</p>
-</div>
-</div>
-<div class="row row-cols-auto">
-<div class="col-4">
 <label for="threshold" class="form-label">
 threshold
 </label>
-<input id="threshold" type="range" class="form-range" min="0" max="80000" step="1000.0000" value="40000">
+<input min="0" max="80000" step="1000.0000" value="40000" id="threshold" type="range" class="form-range">
 <select class="form-select" id="tileType">
 <option id="tile_option_0" value="landfill">
 landfill
@@ -101,7 +104,7 @@ concrete
 <option id="tile_option_3" value="refined-concrete">
 refined-concrete
 </option>
-<option id="tile_option_4" value="hazard-concrete-left">
+<option value="hazard-concrete-left" id="tile_option_4">
 hazard-concrete-left
 </option>
 <option id="tile_option_5" value="refined-hazard-concrete-left">
@@ -109,34 +112,33 @@ refined-hazard-concrete-left
 </option>
 </select>
 <div class="form-check">
-<input class="form-check-input" type="checkbox" id="inverted" checked="false">
+<input id="inverted" checked="false" class="form-check-input" type="checkbox">
 <label class="form-check-label" for="inverted">
 Invert
 </label>
 </div>
-<hr>
-<div class="row row-cols-auto">
+</div>
+<div class="col">
+<div class="row">
 <div class="col">
 <div class="form-check">
-<input id="size-30" checked="true" class="form-check-input" type="checkbox">
+<input type="checkbox" id="size-30" checked="true" class="form-check-input">
 <label class="form-check-label" for="size-30">
 Width 30
 </label>
 </div>
 <div class="form-check">
-<input class="form-check-input" type="checkbox" id="size-60" checked="true">
-<label class="form-check-label" for="size-60">
+<input type="checkbox" id="size-60" checked="true" class="form-check-input">
+<label for="size-60" class="form-check-label">
 Width 60
 </label>
 </div>
 <div class="form-check">
-<input id="size-80" checked="false" class="form-check-input" type="checkbox">
+<input class="form-check-input" type="checkbox" id="size-80" checked="false">
 <label class="form-check-label" for="size-80">
 Width 80
 </label>
 </div>
-</div>
-<div class="col">
 <div class="form-check">
 <input class="form-check-input" type="checkbox" id="size-100" checked="false">
 <label class="form-check-label" for="size-100">
@@ -144,7 +146,7 @@ Width 100
 </label>
 </div>
 <div class="form-check">
-<input checked="false" class="form-check-input" type="checkbox" id="size-120">
+<input class="form-check-input" type="checkbox" id="size-120" checked="false">
 <label class="form-check-label" for="size-120">
 Width 120
 </label>
@@ -156,20 +158,14 @@ Width 150
 </label>
 </div>
 </div>
+</div>
+</div>
 <div class="col">
 <button class="btn btn-success">
-Copy Blueprint Book
+Create
 </button>
+<textarea class="form-control" id="blueprintText" rows="5"></textarea>
 </div>
-</div>
-<div class="row row-cols-auto">
-<label for="blueprintText" class="form-label">
-blueprint string
-</label>
-<textarea class="form-control" id="blueprintText" rows="20"></textarea>
-</div>
-</div>
-<div class="col-4"></div>
 </div>
 </div>
 </div>
