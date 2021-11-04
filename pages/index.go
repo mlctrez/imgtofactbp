@@ -1,4 +1,4 @@
-package components
+package pages
 
 import (
 	"bytes"
@@ -14,6 +14,8 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/edgeefy"
 	"github.com/mlctrez/factbp/blueprint"
+	"github.com/mlctrez/imgtofactbp/components/clipboard"
+	"github.com/mlctrez/imgtofactbp/components/filepicker"
 	"github.com/mlctrez/imgtofactbp/conversions"
 	"github.com/nfnt/resize"
 )
@@ -22,8 +24,8 @@ const ImageRenderWidth = 300
 
 type Index struct {
 	app.Compo
-	picker    *FilePicker
-	clipboard *Clipboard
+	picker    *filepicker.FilePicker
+	clipboard *clipboard.Clipboard
 	original  image.Image
 	scaled    image.Image
 	grayscale image.Image
@@ -37,7 +39,7 @@ func (i *Index) OnMount(ctx app.Context) {
 	i.clipboard.HandlePaste(ctx, "image/", i.imagePaste)
 }
 
-func (i *Index) imageChanged(file *FilePickerResponse) {
+func (i *Index) imageChanged(file *filepicker.Response) {
 	img, _, err := conversions.Base64ToImage(file.Data)
 	if err != nil {
 		fmt.Println("error decoding image", err)
@@ -57,7 +59,7 @@ func (i *Index) renderImages() {
 
 }
 
-func (i *Index) imagePaste(data *ClipboardPasteData) {
+func (i *Index) imagePaste(data *clipboard.PasteData) {
 	pastedImage, _, err := conversions.Base64ToImage(data.Data)
 	if err != nil {
 		fmt.Println(err)
@@ -109,8 +111,8 @@ func tileTypes() []string {
 }
 
 func (i *Index) Render() app.UI {
-	i.picker = (&FilePicker{ID: "hiddenFilePicker", Multiple: false}).Accept("image/*")
-	i.clipboard = &Clipboard{ID: "clipboard"}
+	i.picker = (&filepicker.FilePicker{ID: "hiddenFilePicker", Multiple: false}).Accept("image/*")
+	i.clipboard = &clipboard.Clipboard{ID: "clipboard"}
 	if i.threshold == 0 {
 		i.threshold = 40000
 		i.inverted = false
@@ -128,11 +130,14 @@ func (i *Index) Render() app.UI {
 				app.Label().For("threshold").Class("form-label").Text("threshold"),
 				i.thresholdSlider(), i.tileTypeSelect(), i.invertCheckbox(),
 			),
-			app.Div().Class("col").Body(i.sizeCheckboxes()),
 			app.Div().Class("col").Body(
-				app.Button().Class("btn btn-success").Text("Create").OnClick(i.copyBlueprintBook),
-				app.Textarea().Class("form-control").ID("blueprintText").Rows(5),
-			),
+				i.sizeCheckboxes(),
+				app.Button().Class("btn btn-success").Text("Copy").OnClick(i.copyBlueprintBook),
+				),
+			//app.Div().Class("col").Body(
+			//	app.Button().Class("btn btn-success").Text("Copy").OnClick(i.copyBlueprintBook),
+			//	app.Textarea().Class("form-control").ID("blueprintText").Rows(5),
+			//),
 		),
 	)
 
@@ -213,7 +218,7 @@ func (i *Index) imagesRow() app.HTMLDiv {
 		app.Div().Class("col").Body(
 			app.Img().ID("uploadedImage").Src("/web/logo-192.png").
 				Width(ImageRenderWidth).Style("cursor", "pointer").
-				OnClick(func(ctx app.Context, e app.Event) { i.picker.Click() }),
+				OnClick(func(ctx app.Context, e app.Event) { i.picker.Open() }),
 		),
 		app.Div().Class("col").Body(
 			app.Img().ID("grayScaleImage").Src("").
@@ -286,7 +291,8 @@ func (i *Index) copyBlueprintBook(ctx app.Context, e app.Event) {
 	}
 	output := &bytes.Buffer{}
 	book.Write(output)
-	app.Window().GetElementByID("blueprintText").Set("value", output.String())
+	i.clipboard.WriteText(output.String())
+	//app.Window().GetElementByID("blueprintText").Set("value", output.String())
 }
 
 func buildBlueprint(label string, img image.Image, tileAt func(r, g, b, a uint32) string) *blueprint.Blueprint {
@@ -311,8 +317,8 @@ to the right of the grayscale image. Black pixels will represent where the selec
 type will appear in the blueprint. Use the invert checkbox if needed based on your image.
 `),
 		app.P().Text(`When you are satisfied with the preview image, use the size checkboxes to 
-select the widths to generate. Click on Create and the text area now contains the blueprint
-book string for Factorio. 
+select the widths to generate. Click on Copy and the blueprint string will now be copied into 
+the clipboard.
 `),
 		app.P().Text("Enjoy."),
 		app.Hr(),

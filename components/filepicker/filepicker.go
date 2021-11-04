@@ -1,12 +1,14 @@
-package components
+package filepicker
 
 import (
 	"errors"
 	"fmt"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/mlctrez/imgtofactbp/components"
 )
 
+// FilePicker hides an input of type file and allows Actions for
 type FilePicker struct {
 	app.Compo
 	ID       string
@@ -14,7 +16,7 @@ type FilePicker struct {
 	accept   string
 }
 
-type FilePickerResponse struct {
+type Response struct {
 	Name string
 	Size int
 	Type string
@@ -30,13 +32,13 @@ func (p *FilePicker) Accept(types string) *FilePicker {
 	return p
 }
 
-// Click calls click on the hidden file input using the element.
-func (p *FilePicker) Click() {
+// Open triggers the choose file dialog.
+func (p *FilePicker) Open() {
 	app.Window().GetElementByID(p.ID).Call("click")
 }
 
 func (p *FilePicker) readFile(file app.Value) (
-	response *FilePickerResponse, err error) {
+	response *Response, err error) {
 
 	done := make(chan bool)
 	reader := app.Window().Get("FileReader").New()
@@ -52,7 +54,7 @@ func (p *FilePicker) readFile(file app.Value) (
 		return nil, errors.New("error reading file")
 	}
 
-	response = &FilePickerResponse{
+	response = &Response{
 		Name: file.Get("name").String(),
 		Size: file.Get("size").Int(),
 		Type: file.Get("type").String(),
@@ -62,26 +64,24 @@ func (p *FilePicker) readFile(file app.Value) (
 }
 
 func (p *FilePicker) onChange(ctx app.Context, e app.Event) {
-	target := e.Get("target")
-	if !target.Truthy() {
+
+	list, ok := components.ValueHelper{Root: e}.List("target", "files")
+	if !ok {
 		return
 	}
-	files := target.Get("files")
-	if files.Truthy() && files.Length() > 0 {
-		for i := 0; i < files.Length(); i++ {
-			if file, err := p.readFile(files.Index(i)); err == nil {
-				ctx.NewActionWithValue("FilePicker:file", file, app.Tag{Name: "id", Value: p.ID})
-			} else {
-				fmt.Println("onChange got error", err)
-			}
+	for _, fileValue := range list {
+		if file, err := p.readFile(fileValue); err == nil {
+			ctx.NewActionWithValue("FilePicker:file", file, app.Tag{Name: "id", Value: p.ID})
+		} else {
+			fmt.Println("onChange got error", err)
 		}
 	}
 }
 
 // Handle registers the function callback for this file picker
-func (p *FilePicker) Handle(ctx app.Context, handler func(file *FilePickerResponse)) {
+func (p *FilePicker) Handle(ctx app.Context, handler func(file *Response)) {
 	ctx.Handle("FilePicker:file", func(context app.Context, action app.Action) {
-		if response, ok := action.Value.(*FilePickerResponse); ok && action.Tags.Get("id") == p.ID {
+		if response, ok := action.Value.(*Response); ok && action.Tags.Get("id") == p.ID {
 			handler(response)
 		}
 	})

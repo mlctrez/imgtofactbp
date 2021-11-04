@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/mlctrez/imgtofactbp/components"
+	"github.com/mlctrez/imgtofactbp/pages"
 )
 
 func buildHandler() *app.Handler {
@@ -24,7 +24,7 @@ func buildHandler() *app.Handler {
 }
 
 func main() {
-	app.Route("/", &components.Index{})
+	app.Route("/", &pages.Index{})
 	app.RunWhenOnBrowser()
 	httpServer()
 }
