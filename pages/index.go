@@ -168,8 +168,8 @@ func (i *Index) imagesRow() app.HTMLDiv {
 			Style("cursor", "pointer").OnClick(func(ctx app.Context, e app.Event) { i.picker.Open() }),
 		app.Img().ID("grayScaleImage").Src("/web/logobw-512.png").Width(ImageRenderWidth).
 			Style("cursor", "not-allowed"),
-		app.Div().Class("col").Body(app.Img().ID("blueprintRender").
-			Style("cursor", "not-allowed").Src("/web/logobw-512.png").Width(ImageRenderWidth)),
+		app.Img().ID("blueprintRender").
+			Style("cursor", "not-allowed").Src("/web/logobw-512.png").Width(ImageRenderWidth),
 	)
 }
 
