@@ -1,7 +1,7 @@
-const cacheName = "app-" + "df35517984f67cfe6305c11305c5f7247a3a61d8";
+const cacheName = "app-" + "7889294808d9f4049514cebd0ce178c11623715e";
 
 self.addEventListener("install", event => {
-  console.log("installing app worker df35517984f67cfe6305c11305c5f7247a3a61d8");
+  console.log("installing app worker 7889294808d9f4049514cebd0ce178c11623715e");
 
   event.waitUntil(
     caches.open(cacheName).
@@ -16,9 +16,10 @@ self.addEventListener("install", event => {
           "/imgtofactbp/web/logo-192.png",
           "/imgtofactbp/web/logo-512.png",
           "/imgtofactbp/web/style.css",
-          "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
-          "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.css",
+          "https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.js",
           "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
+          "https://fonts.googleapis.com/icon?family=Material+Icons",
           
         ]);
       }).
@@ -40,7 +41,7 @@ self.addEventListener("activate", event => {
       );
     })
   );
-  console.log("app worker df35517984f67cfe6305c11305c5f7247a3a61d8 is activated");
+  console.log("app worker 7889294808d9f4049514cebd0ce178c11623715e is activated");
 });
 
 self.addEventListener("fetch", event => {

@@ -12,11 +12,12 @@ func buildHandler() *app.Handler {
 		ShortName: "img to bp",
 		Icon:      app.Icon{Large: "/web/logo-512.png", Default: "/web/logo-192.png"},
 		Scripts: []string{
-			"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
+			"https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.js",
 		},
 		Styles: []string{
+			"https://fonts.googleapis.com/icon?family=Material+Icons",
 			"https://fonts.googleapis.com/css2?family=Roboto&display=swap",
-			"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
+			"https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.css",
 			"/web/style.css",
 		},
 	}

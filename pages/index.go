@@ -2,18 +2,24 @@ package pages
 
 import (
 	"bytes"
-	"encoding/base64"
 	"fmt"
 	"image"
 	"image/color"
 	_ "image/gif"
 	_ "image/jpeg"
-	"image/png"
+	"log"
+	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/mlctrez/edgeefy"
 	"github.com/mlctrez/factbp/blueprint"
+	"github.com/mlctrez/goapp-mdc/pkg/bar"
+	"github.com/mlctrez/goapp-mdc/pkg/base"
+	"github.com/mlctrez/goapp-mdc/pkg/button"
+	"github.com/mlctrez/goapp-mdc/pkg/checkbox"
+	"github.com/mlctrez/goapp-mdc/pkg/icon"
+	"github.com/mlctrez/goapp-mdc/pkg/slider"
 	"github.com/mlctrez/imgtofactbp/components/clipboard"
 	"github.com/mlctrez/imgtofactbp/components/filepicker"
 	"github.com/mlctrez/imgtofactbp/conversions"
@@ -24,17 +30,34 @@ const ImageRenderWidth = 300
 
 type Index struct {
 	app.Compo
-	picker    *filepicker.FilePicker
-	clipboard *clipboard.Clipboard
-	original  image.Image
-	scaled    image.Image
-	grayscale image.Image
-	threshold uint32
-	inverted  bool
-	tileType  string
+	base.JsUtil
+	picker         *filepicker.FilePicker
+	clipboard      *clipboard.Clipboard
+	original       image.Image
+	scaled         image.Image
+	grayscale      image.Image
+	threshold      *slider.Continuous
+	thresholdValue uint32
+	inverted       bool
 }
 
 func (i *Index) OnMount(ctx app.Context) {
+	ctx.Handle(string(slider.MDCSliderChange), func(context app.Context, action app.Action) {
+		if action.Name == string(slider.MDCSliderChange) && action.Value == i.threshold {
+			value, err := strconv.ParseFloat(action.Tags.Get("value"), 64)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			i.thresholdValue = uint32(value)
+			i.renderPreview()
+		}
+	})
+	app.Window().GetElementByID("blueprint").Call("addEventListener", "click",
+		app.FuncOf(func(this app.Value, args []app.Value) interface{} {
+			i.copyBlueprintBook(ctx, app.Event{})
+			return nil
+		}))
 	i.picker.Handle(ctx, i.imageChanged)
 	i.clipboard.HandlePaste(ctx, "image/", i.imagePaste)
 }
@@ -56,7 +79,6 @@ func (i *Index) renderImages() {
 	grayScale, _ := conversions.GrayScale(i.scaled)
 	i.grayscale = grayScale
 	setImageSrc("grayScaleImage", conversions.ImageToBase64(grayScale))
-
 }
 
 func (i *Index) imagePaste(data *clipboard.PasteData) {
@@ -73,170 +95,77 @@ func setImageSrc(id string, src string) {
 	app.Window().GetElementByID(id).Set("src", src)
 }
 
-func (i *Index) resizeClicked(ctx app.Context, e app.Event) {
-	if i.original == nil {
-		fmt.Println("blueprint width or image not set")
-		return
-	}
-	widthString := app.Window().GetElementByID("blueprintWidth").Get("value").String()
-	width, err := strconv.Atoi(widthString)
-	if err != nil {
-		fmt.Println("width is not an int")
-		return
-	}
-
-	pixels, err := edgeefy.GrayPixelsFrommImage(i.original)
-	if err != nil {
-		panic(err)
-	}
-	//pixels = edgeefy.CannyEdgeDetect(pixels, false, .5, .1)
-	grey := edgeefy.GrayImageFromGrayPixels(pixels)
-
-	img := resize.Resize(uint(width), 0, grey, resize.Lanczos3)
-	w := &bytes.Buffer{}
-	w.WriteString("data:image/png;base64,")
-	encoder := base64.NewEncoder(base64.StdEncoding, w)
-	err = png.Encode(encoder, img)
-	_ = encoder.Close()
-	if err != nil {
-		fmt.Println("error resizing image")
-		return
-	}
-	app.Window().GetElementByID("resizedImage").Set("src", w.String())
-}
-
-func tileTypes() []string {
-	return []string{"landfill", "stone-path", "concrete", "refined-concrete",
-		"hazard-concrete-left", "refined-hazard-concrete-left"}
-}
-
 func (i *Index) Render() app.UI {
-	i.picker = (&filepicker.FilePicker{ID: "hiddenFilePicker", Multiple: false}).Accept("image/*")
-	i.clipboard = &clipboard.Clipboard{ID: "clipboard"}
-	if i.threshold == 0 {
-		i.threshold = 40000
-		i.inverted = false
-		i.tileType = tileTypes()[0]
+	if i.picker == nil {
+		i.picker = (&filepicker.FilePicker{ID: "hiddenFilePicker", Multiple: false}).Accept("image/*")
+		i.clipboard = &clipboard.Clipboard{ID: "clipboard"}
+		inputRange := &slider.InputRange{Id: "threshold", Name: "threshold", Label: "threshold", Min: 0, Max: 80000, Value: 40000, Step: 500}
+		i.threshold = &slider.Continuous{Discrete: true, Id: "thresholdSlider", Range: inputRange}
 	}
+	topBar := &bar.TopAppBar{Title: "Factorio Image to Blueprint", Fixed: false}
+	topBar.Actions = []app.HTMLButton{githubButton()}
+	body := app.Div().Body(&AppUpdateBanner{}, topBar, topBar.Main().Body(i.body()...))
+	return body
+}
 
-	body := app.Div().Class("container").Body(
-		navbar(), i.picker, i.clipboard,
-		app.Div().Class("row").Body(
-			app.Div().Class("col").Style("font-size", "16px").Body(instructionsElements()...),
+func (i *Index) body() (body []app.UI) {
+	body = append(body, i.picker, i.clipboard)
+	body = append(body, instructionsElements()...)
+	body = append(body, i.imagesRow())
+	body = append(body, app.Hr())
+
+	blueprintButton := &button.Button{Id: "blueprint", Icon: string(icon.MIConstruction),
+		TrailingIcon: true, Raised: true, Label: "blueprint"}
+	invertedCheckbox := &checkbox.Checkbox{Id: "invert", Label: "invert image", Callback: func(input app.HTMLInput) {
+		input.OnChange(func(ctx app.Context, e app.Event) {
+			i.inverted = ctx.JSSrc().Get("checked").Bool()
+			i.renderPreview()
+		})
+	}}
+	body = append(body, app.Div().Style("display", "inline").Body(
+		i.threshold,
+		app.Br(),
+		app.Div().Style("display", "flex").Body(
+			app.Div().Style("display", "inline-block").Body(i.tileCheckBoxes()...),
+			app.Div().Style("display", "inline-block").Body(i.widthCheckBoxes()...),
 		),
-		i.imagesRow(),
-		app.Div().Class("row").Body(
-			app.Div().Class("col").Body(
-				app.Label().For("threshold").Class("form-label").Text("threshold"),
-				i.thresholdSlider(), i.tileTypeSelect(), i.invertCheckbox(),
-			),
-			app.Div().Class("col").Body(
-				i.sizeCheckboxes(),
-				app.Button().Class("btn btn-success").Text("Copy").OnClick(i.copyBlueprintBook),
-			),
-			//app.Div().Class("col").Body(
-			//	app.Button().Class("btn btn-success").Text("Copy").OnClick(i.copyBlueprintBook),
-			//	app.Textarea().Class("form-control").ID("blueprintText").Rows(5),
-			//),
-		),
-	)
+		invertedCheckbox, app.Raw("<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>"), blueprintButton,
+	))
 
 	return body
 }
 
-func (i *Index) sizeCheckboxes() app.HTMLDiv {
-
-	var boxes []app.UI
-	for _, s := range blueprintWidths() {
-		boxes = append(boxes, sizeCb(s))
+func (i *Index) tileCheckBoxes() []app.UI {
+	var content []app.UI
+	for _, tile := range tileTypes() {
+		content = append(content, &checkbox.Checkbox{Id: "tile-" + tile, Label: tile})
 	}
-
-	return app.Div().Class("row").Body(app.Div().Class("col").Body(boxes...))
+	return content
 }
 
-func (i *Index) thresholdSlider() app.HTMLInput {
-	return app.Input().ID("threshold").Type("range").Class("form-range").
-		Min("0").Max(80000).Step(1000).Value(fmt.Sprintf("%d", i.threshold)).
-		OnChange(i.thresholdSliderChange)
-}
-
-func (i *Index) thresholdSliderChange(ctx app.Context, e app.Event) {
-	parseInt, err := strconv.ParseInt(ctx.JSSrc().Get("value").String(), 10, 32)
-	if err == nil {
-		i.threshold = uint32(parseInt)
-		i.renderPreview(uint32(parseInt))
+func (i *Index) widthCheckBoxes() []app.UI {
+	var content []app.UI
+	for _, width := range blueprintWidths() {
+		content = append(content, &checkbox.Checkbox{Id: fmt.Sprintf("width-%d", width), Label: fmt.Sprintf("%d", width)})
 	}
-}
-
-func (i *Index) invertCheckbox() app.HTMLDiv {
-	return app.Div().Class("form-check").Body(
-		app.Input().Class("form-check-input").Type("checkbox").ID("inverted").
-			OnChange(i.invertChange).Checked(i.inverted),
-		app.Label().Class("form-check-label").For("inverted").Text("Invert"),
-	)
-}
-
-func (i *Index) tileTypeSelect() app.HTMLSelect {
-	return app.Select().Class("form-select").
-		ID("tileType").Body(func() []app.UI {
-		var opts []app.UI
-		for i, s := range tileTypes() {
-			opts = append(opts, app.Option().ID(fmt.Sprintf("tile_option_%d", i)).Value(s).Text(s))
-		}
-		return opts
-	}()...).OnChange(func(ctx app.Context, e app.Event) {
-		i.tileType = ctx.JSSrc().Get("value").String()
-		fmt.Println("set tile type to", i.tileType)
-	})
-}
-
-func sizeCb(size int) app.HTMLDiv {
-	id := fmt.Sprintf("size-%d", size)
-	text := fmt.Sprintf("Width %d", size)
-	checked := size < 80
-	return app.Div().Class("form-check").Body(
-		app.Input().Class("form-check-input").Type("checkbox").ID(id).Checked(checked),
-		app.Label().Class("form-check-label").For(id).Text(text),
-	)
-}
-
-func (i *Index) invertChange(ctx app.Context, e app.Event) {
-	i.inverted = ctx.JSSrc().Get("checked").Bool()
-	i.renderPreview(i.threshold)
-}
-
-func navbar() app.HTMLDiv {
-	return app.Div().Class("container").Body(
-		app.Nav().Class("navbar navbar-light bg-light").Body(
-			app.Div().Class("container-fluid").Body(
-				app.Span().Class("navbar-text").Text("Factorio image to blueprint converter v0.1 instructions"),
-			),
-		),
-	)
+	return content
 }
 
 func (i *Index) imagesRow() app.HTMLDiv {
-	return app.Div().Class("row").Body(
-		app.Div().Class("col").Body(
-			app.Img().ID("uploadedImage").Src("/web/logo-192.png").
-				Width(ImageRenderWidth).Style("cursor", "pointer").
-				OnClick(func(ctx app.Context, e app.Event) { i.picker.Open() }),
-		),
-		app.Div().Class("col").Body(
-			app.Img().ID("grayScaleImage").Src("").
-				Width(ImageRenderWidth).Style("cursor", "not-allowed"),
-		),
-		app.Div().Class("col").Body(
-			app.Img().ID("blueprintRender").Src("").Width(ImageRenderWidth),
-		),
+	return app.Div().Style("display", "flex").Body(
+		app.Img().ID("uploadedImage").Src("/web/logo-192.png").Width(ImageRenderWidth).
+			Style("cursor", "pointer").OnClick(func(ctx app.Context, e app.Event) { i.picker.Open() }),
+		app.Img().ID("grayScaleImage").Src("").Width(ImageRenderWidth).
+			Style("cursor", "not-allowed"),
+		app.Div().Class("col").Body(app.Img().ID("blueprintRender").
+			Style("cursor", "not-allowed").Src("").Width(ImageRenderWidth)),
 	)
 }
 
-func (i *Index) renderPreview(t uint32) {
+func (i *Index) renderPreview() {
 	if i.grayscale == nil {
 		return
 	}
-
 	img := i.grayscale
 	preview := image.NewGray(i.grayscale.Bounds())
 	onColor := color.White
@@ -248,7 +177,7 @@ func (i *Index) renderPreview(t uint32) {
 	for x := 0; x < img.Bounds().Max.X; x = x + 1 {
 		for y := 0; y < img.Bounds().Max.Y; y = y + 1 {
 			r, _, _, _ := img.At(x, y).RGBA()
-			if r > t {
+			if r > i.thresholdValue {
 				preview.Set(x, y, onColor)
 			} else {
 				preview.Set(x, y, offColor)
@@ -259,50 +188,114 @@ func (i *Index) renderPreview(t uint32) {
 
 }
 
-func blueprintWidths() []int {
-	return []int{30, 60, 80, 100, 120, 130, 160, 180, 200, 220, 240}
+func selectedWidths() (result []int) {
+	widthsMap := make(map[int]bool)
+	for _, width := range blueprintWidths() {
+		id := fmt.Sprintf("width-%d-input", width)
+		cb := app.Window().GetElementByID(id)
+		if cb.Truthy() && cb.Get("checked").Truthy() {
+			widthsMap[width] = true
+		}
+	}
+	result = []int{}
+	for w := range widthsMap {
+		result = append(result, w)
+	}
+	sort.Ints(result)
+	return
+}
+
+func selectedTiles() (result []string) {
+	tilesMap := make(map[string]bool)
+	tiles := tileTypes()
+	for _, tile := range tiles {
+		id := fmt.Sprintf("tile-%s-input", tile)
+		cb := app.Window().GetElementByID(id)
+		if cb.Truthy() && cb.Get("checked").Truthy() {
+			tilesMap[tile] = true
+		}
+	}
+	result = []string{}
+	for t := range tilesMap {
+		result = append(result, t)
+	}
+	sort.Strings(result)
+	return
+}
+
+func sp(in string) *string {
+	return &in
 }
 
 func (i *Index) copyBlueprintBook(ctx app.Context, e app.Event) {
 
-	sizeMap := make(map[int]bool)
-	sizes := blueprintWidths()
-	for _, size := range blueprintWidths() {
-		checkbox := app.Window().GetElementByID(fmt.Sprintf("size-%d", size))
-		if checkbox.Truthy() {
-			sizeMap[size] = checkbox.Get("checked").Bool()
-		}
+	if i.grayscale == nil {
+		return
 	}
-	fmt.Println("copyBlueprintBook i.tileType=", i.tileType)
-	book := &blueprint.GenericForm{}
-	for _, size := range sizes {
-		if !sizeMap[size] {
-			continue
-		}
-		t := i.threshold
-		width := conversions.ResizeWidth(i.grayscale, size)
-		book.AddBlueprint(buildBlueprint(fmt.Sprintf("size-%d", size), width, func(r, g, b, a uint32) string {
-			if i.inverted {
-				if r > t {
-					return i.tileType
-				}
-				return ""
-			} else {
-				if r > t {
+
+	widths := selectedWidths()
+	tiles := selectedTiles()
+
+	if len(widths) == 0 || len(tiles) == 0 {
+		return
+	}
+
+	fmt.Println("widths", widths)
+	fmt.Println("tiles", tiles)
+
+	t := i.thresholdValue
+
+	container := &blueprint.Container{}
+	container.Book = &blueprint.Book{}
+	container.Book.Label = sp("Image to Blueprint")
+
+	var description string
+	description += "Image to Blueprint book generated from https://mlctrez.github.io/imgtofactbp/\n\n"
+	description += fmt.Sprintf("tiles : %s\n", strings.Join(tiles, ", "))
+	var widthsStr []string
+	for _, width := range widths {
+		widthsStr = append(widthsStr, fmt.Sprintf("%d", width))
+	}
+	description += fmt.Sprintf("widths : %s\n", strings.Join(widthsStr, ", "))
+
+	container.Book.Description = sp(description)
+
+	for _, tileLoop := range tiles {
+		tile := tileLoop
+
+		tileBook := &blueprint.Book{}
+		tileBook.Label = &tile
+		fmt.Println("book for", tile)
+
+		for _, widthLoop := range widths {
+			width := widthLoop
+			resized := conversions.ResizeWidth(i.grayscale, width)
+			bp := buildBlueprint(fmt.Sprintf("width-%d", width), resized, func(r, g, b, a uint32) string {
+				if i.inverted {
+					if r > t {
+						return tile
+					}
 					return ""
+				} else {
+					if r > t {
+						return ""
+					}
+					return tile
 				}
-				return i.tileType
-			}
-		}))
+			})
+			tileBook.AddBlueprint(bp)
+		}
+		container.Book.AddBook(tileBook)
 	}
+
 	output := &bytes.Buffer{}
-	book.Write(output)
+	container.Write(output)
 	i.clipboard.WriteText(output.String())
-	//app.Window().GetElementByID("blueprintText").Set("value", output.String())
 }
 
 func buildBlueprint(label string, img image.Image, tileAt func(r, g, b, a uint32) string) *blueprint.Blueprint {
-	blue := &blueprint.Blueprint{Label: &label}
+	blue := &blueprint.Blueprint{}
+	blue.Label = &label
 	for x := 0; x < img.Bounds().Max.X; x = x + 1 {
 		for y := 0; y < img.Bounds().Max.Y; y = y + 1 {
 			name := tileAt(img.At(x, y).RGBA())
@@ -314,19 +307,28 @@ func buildBlueprint(label string, img image.Image, tileAt func(r, g, b, a uint32
 	return blue
 }
 
-func instructionsElements() []app.UI {
-	return []app.UI{
-		app.P().Text(`Click on the blueprint book to select an image file or use Ctrl-V to paste 
-an image from the clipboard.   The book image will be replaced and a grayscale of the image will appear to the right.`),
-		app.P().Text(`Adjust the threshold slider and a preview image will appear 
-to the right of the grayscale image. Black pixels will represent where the selected tile 
-type will appear in the blueprint. Use the invert checkbox if needed based on your image.
-`),
-		app.P().Text(`When you are satisfied with the preview image, use the size checkboxes to 
-select the widths to generate. Click on Copy and the blueprint string will now be copied into 
-the clipboard.
-`),
-		app.P().Text("Enjoy."),
-		app.Hr(),
+func githubButton() app.HTMLButton {
+	return app.Button().Title("show me the code!").
+		Class(icon.MaterialIconsClass, icon.MaterialIconButton).
+		Body(app.Raw(GitHubSvg)).OnClick(func(ctx app.Context, e app.Event) {
+		app.Window().Call("open", "https://github.com/mlctrez/imgtofactbp/")
+	})
+}
+
+const GitHubSvg = `<svg class="mdc-button__icon" width="32" height="32" aria-hidden="true" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+</svg>`
+
+func tileTypes() []string {
+	return []string{
+		"landfill", "stone-path", "concrete", "refined-concrete",
+		"hazard-concrete-left", "hazard-concrete-right",
+		"refined-hazard-concrete-left", "refined-hazard-concrete-right"}
+}
+
+func blueprintWidths() (result []int) {
+	for i := 20; i <= 400; i = i + 20 {
+		result = append(result, i)
 	}
+	return
 }

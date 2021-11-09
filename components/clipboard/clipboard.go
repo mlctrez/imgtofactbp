@@ -3,6 +3,7 @@ package clipboard
 import (
 	"errors"
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
@@ -49,14 +50,17 @@ func (c *Clipboard) OnMount(ctx app.Context) {
 }
 
 func (c *Clipboard) pasteEventListener(ctx app.Context, e app.Event) {
+	log.Println("pasteEventListener")
 	list, ok := components.ValueHelper{Root: e}.List("clipboardData", "items")
 	if !ok {
 		fmt.Println("paste with no list")
 		return
 	}
 	for i, item := range list {
+		log.Println("pasteEventListener item",i,item)
 		clipboardItem, err := c.readPasteData(item)
 		if err == ProtectedData {
+			log.Println("pasteEventListener protected")
 			continue
 		}
 		if err != nil {

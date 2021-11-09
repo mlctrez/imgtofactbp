@@ -16,8 +16,6 @@ func GrayScale(original image.Image) (img image.Image, err error) {
 	if err != nil {
 		return
 	}
-
 	//pixels = edgeefy.CannyEdgeDetect(pixels, false, .5, .1)
-
 	return edgeefy.GrayImageFromGrayPixels(pixels), nil
 }
