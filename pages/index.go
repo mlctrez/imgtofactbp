@@ -41,6 +41,16 @@ type Index struct {
 	inverted       bool
 }
 
+func (i *Index) OnNav(context app.Context) {
+	p := context.Page()
+	p.SetTitle("Image to Factorio Blueprint")
+	p.SetAuthor("mlctrez")
+	p.SetKeywords("factorio, blueprint, image, convert")
+	p.SetDescription("A progressive web application for converting images to factorio tile blueprints.")
+}
+
+var _ app.Navigator = (*Index)(nil)
+
 func (i *Index) OnMount(ctx app.Context) {
 	ctx.Handle(string(slider.MDCSliderChange), func(context app.Context, action app.Action) {
 		if action.Name == string(slider.MDCSliderChange) && action.Value == i.threshold {
@@ -79,6 +89,7 @@ func (i *Index) renderImages() {
 	grayScale, _ := conversions.GrayScale(i.scaled)
 	i.grayscale = grayScale
 	setImageSrc("grayScaleImage", conversions.ImageToBase64(grayScale))
+	i.renderPreview()
 }
 
 func (i *Index) imagePaste(data *clipboard.PasteData) {
@@ -102,7 +113,8 @@ func (i *Index) Render() app.UI {
 		inputRange := &slider.InputRange{Id: "threshold", Name: "threshold", Label: "threshold", Min: 0, Max: 80000, Value: 40000, Step: 500}
 		i.threshold = &slider.Continuous{Discrete: true, Id: "thresholdSlider", Range: inputRange}
 	}
-	topBar := &bar.TopAppBar{Title: "Factorio Image to Blueprint", Fixed: false}
+	topBar := &bar.TopAppBar{Title: "Image to Factorio Blueprint", Fixed: false}
+	//topBar.Navigation = []app.HTMLButton{navButton()}
 	topBar.Actions = []app.HTMLButton{githubButton()}
 	body := app.Div().Body(&AppUpdateBanner{}, topBar, topBar.Main().Body(i.body()...))
 	return body
@@ -112,7 +124,6 @@ func (i *Index) body() (body []app.UI) {
 	body = append(body, i.picker, i.clipboard)
 	body = append(body, instructionsElements()...)
 	body = append(body, i.imagesRow())
-	body = append(body, app.Hr())
 
 	blueprintButton := &button.Button{Id: "blueprint", Icon: string(icon.MIConstruction),
 		TrailingIcon: true, Raised: true, Label: "blueprint"}
@@ -153,12 +164,12 @@ func (i *Index) widthCheckBoxes() []app.UI {
 
 func (i *Index) imagesRow() app.HTMLDiv {
 	return app.Div().Style("display", "flex").Body(
-		app.Img().ID("uploadedImage").Src("/web/logo-192.png").Width(ImageRenderWidth).
+		app.Img().ID("uploadedImage").Src("/web/logo-512.png").Width(ImageRenderWidth).
 			Style("cursor", "pointer").OnClick(func(ctx app.Context, e app.Event) { i.picker.Open() }),
-		app.Img().ID("grayScaleImage").Src("").Width(ImageRenderWidth).
+		app.Img().ID("grayScaleImage").Src("/web/logobw-512.png").Width(ImageRenderWidth).
 			Style("cursor", "not-allowed"),
 		app.Div().Class("col").Body(app.Img().ID("blueprintRender").
-			Style("cursor", "not-allowed").Src("").Width(ImageRenderWidth)),
+			Style("cursor", "not-allowed").Src("/web/logobw-512.png").Width(ImageRenderWidth)),
 	)
 }
 
@@ -305,6 +316,11 @@ func buildBlueprint(label string, img image.Image, tileAt func(r, g, b, a uint32
 		}
 	}
 	return blue
+}
+
+func navButton() app.HTMLButton {
+	return app.Button().Class(icon.MaterialIconsClass, icon.MaterialIconButton).
+		Body(app.Img().Src("/web/logobw-512.png"))
 }
 
 func githubButton() app.HTMLButton {

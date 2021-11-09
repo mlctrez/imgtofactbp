@@ -7,8 +7,8 @@ import (
 
 func buildHandler() *app.Handler {
 	h := &app.Handler{
-		Title:     "factorio image to blueprint",
-		Name:      "factorio image to blueprint",
+		Title:     "image to factorio blueprint",
+		Name:      "image to factorio blueprint",
 		ShortName: "img to bp",
 		Icon:      app.Icon{Large: "/web/logo-512.png", Default: "/web/logo-192.png"},
 		Scripts: []string{
