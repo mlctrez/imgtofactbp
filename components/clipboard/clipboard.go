@@ -57,7 +57,7 @@ func (c *Clipboard) pasteEventListener(ctx app.Context, e app.Event) {
 		return
 	}
 	for i, item := range list {
-		log.Println("pasteEventListener item",i,item)
+		log.Println("pasteEventListener item", i, item)
 		clipboardItem, err := c.readPasteData(item)
 		if err == ProtectedData {
 			log.Println("pasteEventListener protected")
