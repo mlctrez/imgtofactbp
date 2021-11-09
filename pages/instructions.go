@@ -4,9 +4,9 @@ import "github.com/maxence-charriere/go-app/v9/pkg/app"
 
 func instructionsElements() []app.UI {
 	return []app.UI{
-		app.P().Text(`Click on the left blueprint image to select an image to convert. The three images will
-now be your image, a grayscale representation, and a tile preview image. To select a new image, click again on 
-the first image in the row.`),
+		app.P().Text(`Click on the left blueprint book to select an image to convert. The three images will
+now change to your image, a grayscale representation, and a tile preview image. To select a new image, click on 
+the first image in the row again.`),
 		app.P().Text(`Adjust the threshold slider for the desired preview image. The initial preview image may 
 not be visible until the slider is adjusted. Black pixels in the preview image will represent where the tiles will 
 be placed in the blueprints. The invert checkbox will change if tiles are placed above or below the threshold.
