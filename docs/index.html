@@ -5,27 +5,27 @@
 <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="author" content>
 <meta name="description" content>
-<meta name="keywords" content>
+<meta content name="keywords">
 <meta name="theme-color" content="#2d2c2c">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta content="http://127.0.0.1:40311/" property="og:url">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" name="viewport">
+<meta property="og:url" content="http://127.0.0.1:42015/">
 <meta property="og:title" content="image to factorio blueprint">
 <meta property="og:description" content>
 <meta property="og:type" content="website">
-<meta property="og:image" content>
+<meta content property="og:image">
 <title>
 image to factorio blueprint
 </title>
 <link rel="icon" type="image/png" href="/imgtofactbp/web/logo-192.png">
 <link rel="apple-touch-icon" href="/imgtofactbp/web/logo-192.png">
-<link rel="manifest" href="/imgtofactbp/manifest.webmanifest">
+<link href="/imgtofactbp/manifest.webmanifest" rel="manifest">
 <link type="text/css" rel="stylesheet" href="/imgtofactbp/app.css">
 <script defer="true" src="/imgtofactbp/wasm_exec.js"></script>
 <script defer="true" src="/imgtofactbp/app.js"></script>
 <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" type="text/css">
 <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.css">
-<link type="text/css" rel="stylesheet" href="/imgtofactbp/web/style.css">
+<link href="/imgtofactbp/web/style.css" type="text/css" rel="stylesheet">
 <script defer="true" src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.js"></script>
 </head>
 <body>
@@ -38,7 +38,7 @@ Loading
 </aside>
 <div id="app-pre-render">
 <div>
-<div class="mdc-banner mdc-banner--centered" id="appUpdateBanner">
+<div id="appUpdateBanner" class="mdc-banner mdc-banner--centered">
 <div class="mdc-banner__fixed">
 <div class="mdc-banner__content" role="alertdialog" aria-live="assertlive">
 <div class="mdc-banner__graphic-text-wrapper">
@@ -69,7 +69,7 @@ later
 </div>
 </div>
 </div>
-<header data-mdc-auto-init="MDCTopAppBar" class="mdc-top-app-bar">
+<header class="mdc-top-app-bar" data-mdc-auto-init="MDCTopAppBar">
 <div class="mdc-top-app-bar__row">
 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
 <span class="mdc-top-app-bar__title">
@@ -86,7 +86,7 @@ Image to Factorio Blueprint
 </div>
 </header>
 <main class="mdc-top-app-bar--fixed-adjust">
-<input id="hiddenFilePicker" style="display:none;" multiple="false" accept="image/*" type="file">
+<input multiple="false" accept="image/*" type="file" id="hiddenFilePicker" style="display:none;">
 <div id="clipboard" style="display:none;">
 clipboard component
 </div>
@@ -103,18 +103,18 @@ is opposite of what you want.
 </p>
 <p style="font-size:14px;">
 When you are satisfied with the preview, use the 
-tile and size checkboxes to select the blueprints to generate. Clicking on the blueprint button will copy a 
-blueprint book into the clipboard, ready to import as a blueprint string.
+tile and size checkboxes to select the blueprints to generate. Clicking on the copy blueprint button will place the
+blueprint string into the clipboard, ready to import as a blueprint string.
 
 </p>
 <div style="display:flex;">
-<img width="300" style="cursor:pointer;" id="uploadedImage" src="/imgtofactbp/web/logo-512.png">
-<img style="cursor:not-allowed;" id="grayScaleImage" src="/imgtofactbp/web/logobw-512.png" width="300">
-<img id="blueprintRender" style="cursor:not-allowed;" src="/imgtofactbp/web/logobw-512.png" width="300">
+<img id="uploadedImage" src="/imgtofactbp/web/logo-512.png" width="300" style="cursor:pointer;">
+<img src="/imgtofactbp/web/logobw-512.png" width="300" style="cursor:not-allowed;" id="grayScaleImage">
+<img style="cursor:not-allowed;" src="/imgtofactbp/web/logobw-512.png" width="300" id="blueprintRender">
 </div>
 <div style="display:inline;">
 <div id="thresholdSlider" class="mdc-slider mdc-slider--discrete">
-<input class="mdc-slider__input" min="0.0000" max="80000.0000" value="40000.0000" step="500.0000" type="range" name="threshold" aria-label="threshold" id="threshold">
+<input class="mdc-slider__input" name="threshold" id="threshold" value="40000.0000" step="500.0000" type="range" aria-label="threshold" min="0.0000" max="80000.0000">
 <div class="mdc-slider__track">
 <div class="mdc-slider__track--inactive"></div>
 <div class="mdc-slider__track--active">
@@ -137,7 +137,7 @@ blueprint book into the clipboard, ready to import as a blueprint string.
 <div style="display:inline-block;">
 <div id="tile-landfill-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="tile-landfill">
-<input type="checkbox" class="mdc-checkbox__native-control" id="tile-landfill-input" disabled="false" checked="false">
+<input checked="false" type="checkbox" class="mdc-checkbox__native-control" id="tile-landfill-input" disabled="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -161,7 +161,7 @@ landfill
 </div>
 <div class="mdc-checkbox__ripple"></div>
 </div>
-<label id="tile-stone-path-label" for="tile-stone-path-input">
+<label for="tile-stone-path-input" id="tile-stone-path-label">
 stone-path
 </label>
 </div>
@@ -176,13 +176,13 @@ stone-path
 </div>
 <div class="mdc-checkbox__ripple"></div>
 </div>
-<label for="tile-concrete-input" id="tile-concrete-label">
+<label id="tile-concrete-label" for="tile-concrete-input">
 concrete
 </label>
 </div>
 <div id="tile-refined-concrete-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="tile-refined-concrete">
-<input id="tile-refined-concrete-input" disabled="false" checked="false" type="checkbox" class="mdc-checkbox__native-control">
+<input checked="false" type="checkbox" class="mdc-checkbox__native-control" id="tile-refined-concrete-input" disabled="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -191,13 +191,13 @@ concrete
 </div>
 <div class="mdc-checkbox__ripple"></div>
 </div>
-<label for="tile-refined-concrete-input" id="tile-refined-concrete-label">
+<label id="tile-refined-concrete-label" for="tile-refined-concrete-input">
 refined-concrete
 </label>
 </div>
 <div id="tile-hazard-concrete-left-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="tile-hazard-concrete-left">
-<input checked="false" type="checkbox" class="mdc-checkbox__native-control" id="tile-hazard-concrete-left-input" disabled="false">
+<input class="mdc-checkbox__native-control" id="tile-hazard-concrete-left-input" disabled="false" checked="false" type="checkbox">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -206,13 +206,13 @@ refined-concrete
 </div>
 <div class="mdc-checkbox__ripple"></div>
 </div>
-<label id="tile-hazard-concrete-left-label" for="tile-hazard-concrete-left-input">
+<label for="tile-hazard-concrete-left-input" id="tile-hazard-concrete-left-label">
 hazard-concrete-left
 </label>
 </div>
 <div id="tile-hazard-concrete-right-formField" class="mdc-form-field">
-<div class="mdc-checkbox" id="tile-hazard-concrete-right">
-<input type="checkbox" class="mdc-checkbox__native-control" id="tile-hazard-concrete-right-input" disabled="false" checked="false">
+<div id="tile-hazard-concrete-right" class="mdc-checkbox">
+<input checked="false" type="checkbox" class="mdc-checkbox__native-control" id="tile-hazard-concrete-right-input" disabled="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -242,7 +242,7 @@ refined-hazard-concrete-left
 </div>
 <div id="tile-refined-hazard-concrete-right-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="tile-refined-hazard-concrete-right">
-<input disabled="false" checked="false" type="checkbox" class="mdc-checkbox__native-control" id="tile-refined-hazard-concrete-right-input">
+<input type="checkbox" class="mdc-checkbox__native-control" id="tile-refined-hazard-concrete-right-input" disabled="false" checked="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -251,15 +251,15 @@ refined-hazard-concrete-left
 </div>
 <div class="mdc-checkbox__ripple"></div>
 </div>
-<label id="tile-refined-hazard-concrete-right-label" for="tile-refined-hazard-concrete-right-input">
+<label for="tile-refined-hazard-concrete-right-input" id="tile-refined-hazard-concrete-right-label">
 refined-hazard-concrete-right
 </label>
 </div>
 </div>
 <div style="display:inline-block;">
-<div id="width-20-formField" class="mdc-form-field">
+<div class="mdc-form-field" id="width-20-formField">
 <div class="mdc-checkbox" id="width-20">
-<input type="checkbox" class="mdc-checkbox__native-control" id="width-20-input" disabled="false" checked="false">
+<input checked="false" type="checkbox" class="mdc-checkbox__native-control" id="width-20-input" disabled="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -274,7 +274,7 @@ refined-hazard-concrete-right
 </div>
 <div id="width-40-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="width-40">
-<input type="checkbox" class="mdc-checkbox__native-control" id="width-40-input" disabled="false" checked="false">
+<input class="mdc-checkbox__native-control" id="width-40-input" disabled="false" checked="false" type="checkbox">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -288,8 +288,8 @@ refined-hazard-concrete-right
 </label>
 </div>
 <div id="width-60-formField" class="mdc-form-field">
-<div class="mdc-checkbox" id="width-60">
-<input checked="false" type="checkbox" class="mdc-checkbox__native-control" id="width-60-input" disabled="false">
+<div id="width-60" class="mdc-checkbox">
+<input type="checkbox" class="mdc-checkbox__native-control" id="width-60-input" disabled="false" checked="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -304,7 +304,7 @@ refined-hazard-concrete-right
 </div>
 <div id="width-80-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="width-80">
-<input class="mdc-checkbox__native-control" id="width-80-input" disabled="false" checked="false" type="checkbox">
+<input disabled="false" checked="false" type="checkbox" class="mdc-checkbox__native-control" id="width-80-input">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -333,8 +333,8 @@ refined-hazard-concrete-right
 </label>
 </div>
 <div id="width-120-formField" class="mdc-form-field">
-<div class="mdc-checkbox" id="width-120">
-<input type="checkbox" class="mdc-checkbox__native-control" id="width-120-input" disabled="false" checked="false">
+<div id="width-120" class="mdc-checkbox">
+<input id="width-120-input" disabled="false" checked="false" type="checkbox" class="mdc-checkbox__native-control">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -349,7 +349,7 @@ refined-hazard-concrete-right
 </div>
 <div id="width-140-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="width-140">
-<input class="mdc-checkbox__native-control" id="width-140-input" disabled="false" checked="false" type="checkbox">
+<input type="checkbox" class="mdc-checkbox__native-control" id="width-140-input" disabled="false" checked="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -363,8 +363,8 @@ refined-hazard-concrete-right
 </label>
 </div>
 <div id="width-160-formField" class="mdc-form-field">
-<div id="width-160" class="mdc-checkbox">
-<input class="mdc-checkbox__native-control" id="width-160-input" disabled="false" checked="false" type="checkbox">
+<div class="mdc-checkbox" id="width-160">
+<input disabled="false" checked="false" type="checkbox" class="mdc-checkbox__native-control" id="width-160-input">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -379,7 +379,7 @@ refined-hazard-concrete-right
 </div>
 <div id="width-180-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="width-180">
-<input disabled="false" checked="false" type="checkbox" class="mdc-checkbox__native-control" id="width-180-input">
+<input type="checkbox" class="mdc-checkbox__native-control" id="width-180-input" disabled="false" checked="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -392,8 +392,8 @@ refined-hazard-concrete-right
 180
 </label>
 </div>
-<div id="width-200-formField" class="mdc-form-field">
-<div id="width-200" class="mdc-checkbox">
+<div class="mdc-form-field" id="width-200-formField">
+<div class="mdc-checkbox" id="width-200">
 <input class="mdc-checkbox__native-control" id="width-200-input" disabled="false" checked="false" type="checkbox">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
@@ -407,9 +407,9 @@ refined-hazard-concrete-right
 200
 </label>
 </div>
-<div id="width-220-formField" class="mdc-form-field">
+<div class="mdc-form-field" id="width-220-formField">
 <div class="mdc-checkbox" id="width-220">
-<input checked="false" type="checkbox" class="mdc-checkbox__native-control" id="width-220-input" disabled="false">
+<input type="checkbox" class="mdc-checkbox__native-control" id="width-220-input" disabled="false" checked="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -454,7 +454,7 @@ refined-hazard-concrete-right
 </div>
 <div id="width-280-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="width-280">
-<input type="checkbox" class="mdc-checkbox__native-control" id="width-280-input" disabled="false" checked="false">
+<input checked="false" type="checkbox" class="mdc-checkbox__native-control" id="width-280-input" disabled="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -469,7 +469,7 @@ refined-hazard-concrete-right
 </div>
 <div id="width-300-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="width-300">
-<input type="checkbox" class="mdc-checkbox__native-control" id="width-300-input" disabled="false" checked="false">
+<input class="mdc-checkbox__native-control" id="width-300-input" disabled="false" checked="false" type="checkbox">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -482,8 +482,8 @@ refined-hazard-concrete-right
 300
 </label>
 </div>
-<div id="width-320-formField" class="mdc-form-field">
-<div id="width-320" class="mdc-checkbox">
+<div class="mdc-form-field" id="width-320-formField">
+<div class="mdc-checkbox" id="width-320">
 <input type="checkbox" class="mdc-checkbox__native-control" id="width-320-input" disabled="false" checked="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
@@ -493,13 +493,13 @@ refined-hazard-concrete-right
 </div>
 <div class="mdc-checkbox__ripple"></div>
 </div>
-<label id="width-320-label" for="width-320-input">
+<label for="width-320-input" id="width-320-label">
 320
 </label>
 </div>
 <div id="width-340-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="width-340">
-<input class="mdc-checkbox__native-control" id="width-340-input" disabled="false" checked="false" type="checkbox">
+<input checked="false" type="checkbox" class="mdc-checkbox__native-control" id="width-340-input" disabled="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -512,8 +512,8 @@ refined-hazard-concrete-right
 340
 </label>
 </div>
-<div id="width-360-formField" class="mdc-form-field">
-<div id="width-360" class="mdc-checkbox">
+<div class="mdc-form-field" id="width-360-formField">
+<div class="mdc-checkbox" id="width-360">
 <input type="checkbox" class="mdc-checkbox__native-control" id="width-360-input" disabled="false" checked="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
@@ -523,7 +523,7 @@ refined-hazard-concrete-right
 </div>
 <div class="mdc-checkbox__ripple"></div>
 </div>
-<label for="width-360-input" id="width-360-label">
+<label id="width-360-label" for="width-360-input">
 360
 </label>
 </div>
@@ -544,7 +544,7 @@ refined-hazard-concrete-right
 </div>
 <div id="width-400-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="width-400">
-<input type="checkbox" class="mdc-checkbox__native-control" id="width-400-input" disabled="false" checked="false">
+<input class="mdc-checkbox__native-control" id="width-400-input" disabled="false" checked="false" type="checkbox">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -561,7 +561,7 @@ refined-hazard-concrete-right
 </div>
 <div id="invert-formField" class="mdc-form-field">
 <div class="mdc-checkbox" id="invert">
-<input type="checkbox" class="mdc-checkbox__native-control" id="invert-input" disabled="false" checked="false">
+<input checked="false" type="checkbox" class="mdc-checkbox__native-control" id="invert-input" disabled="false">
 <div class="mdc-checkbox__background">
 <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -570,7 +570,7 @@ refined-hazard-concrete-right
 </div>
 <div class="mdc-checkbox__ripple"></div>
 </div>
-<label for="invert-input" id="invert-label">
+<label id="invert-label" for="invert-input">
 invert image
 </label>
 </div>
@@ -578,7 +578,7 @@ invert image
 <button id="blueprint" class="mdc-button mdc-button--icon-trailing mdc-button--raised">
 <span class="mdc-button__ripple"></span>
 <span class="mdc-button__label">
-blueprint
+copy blueprint
 </span>
 <i class="material-icons mdc-button__icon">
 construction

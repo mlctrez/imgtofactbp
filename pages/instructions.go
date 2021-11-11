@@ -12,8 +12,8 @@ The preview image may only show as one color until the slider is adjusted. Black
 will represent where tiles will be placed in the blueprint.  Use the invert checkbox if the preview 
 is opposite of what you want.`),
 		app.P().Style("font-size","14px").Text(`When you are satisfied with the preview, use the 
-tile and size checkboxes to select the blueprints to generate. Clicking on the blueprint button will copy a 
-blueprint book into the clipboard, ready to import as a blueprint string.
+tile and size checkboxes to select the blueprints to generate. Clicking on the copy blueprint button will place the
+blueprint string into the clipboard, ready to import as a blueprint string.
 `),
 	}
 }

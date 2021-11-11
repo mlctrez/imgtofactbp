@@ -126,7 +126,7 @@ func (i *Index) body() (body []app.UI) {
 	body = append(body, i.imagesRow())
 
 	blueprintButton := &button.Button{Id: "blueprint", Icon: string(icon.MIConstruction),
-		TrailingIcon: true, Raised: true, Label: "blueprint"}
+		TrailingIcon: true, Raised: true, Label: "copy blueprint"}
 	invertedCheckbox := &checkbox.Checkbox{Id: "invert", Label: "invert image", Callback: func(input app.HTMLInput) {
 		input.OnChange(func(ctx app.Context, e app.Event) {
 			i.inverted = ctx.JSSrc().Get("checked").Bool()
