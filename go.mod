@@ -12,7 +12,7 @@ require (
 require (
 	github.com/deckarep/golang-set v1.7.1 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/mlctrez/goapp-mdc v0.0.0-20211109033011-977af29960f6 // indirect
+	github.com/mlctrez/goapp-mdc v0.1.0 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	gonum.org/v1/gonum v0.9.3 // indirect
 )

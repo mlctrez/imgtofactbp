@@ -32,6 +32,8 @@ github.com/mlctrez/goapp-mdc v0.0.0-20211109011332-a1c0bfecc3b9 h1:C+p37sAFlCeXZ
 github.com/mlctrez/goapp-mdc v0.0.0-20211109011332-a1c0bfecc3b9/go.mod h1:sK/8gdxa39zdEzpoKpf2Hn4a3JioVs+ofCcKLylIZF0=
 github.com/mlctrez/goapp-mdc v0.0.0-20211109033011-977af29960f6 h1:9P3kpKviATRIYyoiRPTv+MFMBu7KNYwWzoIL2J/DDg8=
 github.com/mlctrez/goapp-mdc v0.0.0-20211109033011-977af29960f6/go.mod h1:sK/8gdxa39zdEzpoKpf2Hn4a3JioVs+ofCcKLylIZF0=
+github.com/mlctrez/goapp-mdc v0.1.0 h1:dkwvqjTT66Dst+TsH3uCuUw20D2DHnpDlVSpqgtEeFA=
+github.com/mlctrez/goapp-mdc v0.1.0/go.mod h1:sK/8gdxa39zdEzpoKpf2Hn4a3JioVs+ofCcKLylIZF0=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 h1:zYyBkD/k9seD2A7fsi6Oo2LfFZAehjjQMERAvZLEDnQ=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646/go.mod h1:jpp1/29i3P1S/RLdc7JQKbRpFeM1dOBd8T9ki5s+AY8=
 github.com/phpdave11/gofpdf v1.4.2/go.mod h1:zpO6xFn9yxo3YLyMvW8HcKWVdbNqgIfOOp2dXMnm1mY=
