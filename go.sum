@@ -3,8 +3,9 @@ gioui.org v0.0.0-20210308172011-57750fc8a0a6/go.mod h1:RSH6KIUZ0p2xy5zHDxgAM4zum
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/ajstarks/svgo v0.0.0-20180226025133-644b8db467af/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
 github.com/boombuler/barcode v1.0.0/go.mod h1:paBWMcWSl3LHKBqUq+rly7CNSldXjb2rDl3JlRe0mD8=
-github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/deckarep/golang-set v1.7.1 h1:SCQV0S6gTtp6itiFrTqI+pfmJ4LN85S1YzhDf9rTHJQ=
 github.com/deckarep/golang-set v1.7.1/go.mod h1:93vsz/8Wt4joVM7c2AVqh+YRMiUSc14yDtF28KmMOgQ=
 github.com/fogleman/gg v1.2.1-0.20190220221249-0403632d5b90/go.mod h1:R/bRT+9gY/C5z7JzPU0zXsXHKM4/ayA+zqcVNZzPa1k=
@@ -24,14 +25,12 @@ github.com/jung-kurt/gofpdf v1.0.0/go.mod h1:7Id9E/uU8ce6rXgefFLlgrJj/GYY22cpxn+
 github.com/jung-kurt/gofpdf v1.0.3-0.20190309125859-24315acbbda5/go.mod h1:7Id9E/uU8ce6rXgefFLlgrJj/GYY22cpxn+r32jIOes=
 github.com/maxence-charriere/go-app/v9 v9.2.1 h1:wP+A7zMDc1DIxXvhZQvWVq+vzlb8Hmo75AEVMChoVRg=
 github.com/maxence-charriere/go-app/v9 v9.2.1/go.mod h1:zo0n1kh4OMKn7P+MrTUUi7QwUMU2HOfHsZ293TITtxI=
+github.com/maxence-charriere/go-app/v9 v9.8.0 h1:rDfLNvxIKXyjpRS76P45kn9Xj8IumwfoqpsEJYxfd+E=
+github.com/maxence-charriere/go-app/v9 v9.8.0/go.mod h1:gzgFoeaDuoNHw9MbJraTCKIoKtZ/SoIfOIHHn2FOffc=
 github.com/mlctrez/edgeefy v0.0.0-20210214182222-402531e31b4f h1:0lS3N32KTBFoPCQlKxycDibyCh/+H7fq0HKZEh9Hxyc=
 github.com/mlctrez/edgeefy v0.0.0-20210214182222-402531e31b4f/go.mod h1:UA02w6uIC/ctJpaC07Eg2hkE5rLYpfc4pGTKtObS7qM=
 github.com/mlctrez/factbp v0.0.0-20211106002049-1db1230a93e8 h1:0XjS/URLV4i/cHKWtC8osv2aqBLxsH5MD/oDxQWE0HU=
 github.com/mlctrez/factbp v0.0.0-20211106002049-1db1230a93e8/go.mod h1:V6hk0L6q+clRkCYCxThq1+UbluANqi2kvGJ0SzYQO1g=
-github.com/mlctrez/goapp-mdc v0.0.0-20211109011332-a1c0bfecc3b9 h1:C+p37sAFlCeXZ4REezdeyuFY3o4VElbh3H4BH/hpqk8=
-github.com/mlctrez/goapp-mdc v0.0.0-20211109011332-a1c0bfecc3b9/go.mod h1:sK/8gdxa39zdEzpoKpf2Hn4a3JioVs+ofCcKLylIZF0=
-github.com/mlctrez/goapp-mdc v0.0.0-20211109033011-977af29960f6 h1:9P3kpKviATRIYyoiRPTv+MFMBu7KNYwWzoIL2J/DDg8=
-github.com/mlctrez/goapp-mdc v0.0.0-20211109033011-977af29960f6/go.mod h1:sK/8gdxa39zdEzpoKpf2Hn4a3JioVs+ofCcKLylIZF0=
 github.com/mlctrez/goapp-mdc v0.1.0 h1:dkwvqjTT66Dst+TsH3uCuUw20D2DHnpDlVSpqgtEeFA=
 github.com/mlctrez/goapp-mdc v0.1.0/go.mod h1:sK/8gdxa39zdEzpoKpf2Hn4a3JioVs+ofCcKLylIZF0=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 h1:zYyBkD/k9seD2A7fsi6Oo2LfFZAehjjQMERAvZLEDnQ=

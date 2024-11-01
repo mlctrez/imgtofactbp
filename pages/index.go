@@ -339,7 +339,8 @@ func tileTypes() []string {
 	return []string{
 		"landfill", "stone-path", "concrete", "refined-concrete",
 		"hazard-concrete-left", "hazard-concrete-right",
-		"refined-hazard-concrete-left", "refined-hazard-concrete-right"}
+		"refined-hazard-concrete-left", "refined-hazard-concrete-right",
+		"foundation", "space-platform-foundation"}
 }
 
 func blueprintWidths() (result []int) {

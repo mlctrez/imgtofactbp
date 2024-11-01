@@ -4,14 +4,19 @@
   "description": "",
   "icons": [
     {
-      "src": "/imgtofactbp/web/logo-192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
     },
     {
       "src": "/imgtofactbp/web/logo-512.png",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "/imgtofactbp/web/logo-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
     }
   ],
   "scope": "/imgtofactbp/",
